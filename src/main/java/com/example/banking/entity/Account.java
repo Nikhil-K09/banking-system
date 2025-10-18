@@ -13,7 +13,7 @@ import lombok.*;
 @Entity
 public class Account {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY) check reason depricate
+    //@GeneratedValue(strategy = GenerationType.IDENTITY) //check reason depricate
     private Long id;
 
     @Column(name = "account_holder_name")

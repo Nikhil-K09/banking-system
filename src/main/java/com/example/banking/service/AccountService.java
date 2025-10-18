@@ -4,4 +4,8 @@ import com.example.banking.dto.AccountDto;
 
 public interface AccountService {
     AccountDto createAccount(AccountDto accountDto);
+
+    AccountDto getAccountById(long Id);
+
+    AccountDto deposit(long Id, double balance);
 }
