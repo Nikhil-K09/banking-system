@@ -7,6 +7,9 @@ import com.example.banking.repository.AccountRepository;
 import com.example.banking.service.AccountService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -39,5 +42,33 @@ public class AccountServiceImpl implements AccountService {
         account.setBalance(total);
         Account savedAccount = accountRepository.save(account);
         return AccountMapper.mapToAccountDto(savedAccount);
+    }
+
+    @Override
+    public AccountDto withdraw(long id, double amount) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("no account foound"));
+
+        if(account.getBalance()<amount){
+            throw new RuntimeException("insufficient balnce");
+        }
+        double total =account.getBalance()-amount;
+        account.setBalance(total);
+        Account savedAccount = accountRepository.save(account);
+        return AccountMapper.mapToAccountDto(savedAccount);
+    }
+
+    @Override
+    public List<AccountDto> getAllAccounts() {
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream().map(account -> AccountMapper.mapToAccountDto(account)).
+                collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteAccount(long id) {
+        Account account = accountRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("no account found"));
+        accountRepository.deleteById(id);
     }
 }
